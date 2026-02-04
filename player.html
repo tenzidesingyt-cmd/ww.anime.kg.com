@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Просмотр - KG Anime</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .player-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      background-color: #003d3d;
+      color: white;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      aspect-ratio: 16 / 9;
+      border: 2px solid white;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000;
+      margin-bottom: 20px;
+    }
+
+    /* Стили для фрейма плеера */
+    #kinescope-player {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .series-nav-bar {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      width: 100%;
+    }
+
+    .nav-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+      color: #1a1a1a;
+      transition: 0.2s;
+    }
+
+    .btn-gray { background-color: #e0e0e0; }
+    .btn-next { background-color: #a5b98f; }
+    .hidden { visibility: hidden; }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="top-nav">
+    <span class="logo-text">KG Anime</span>
+    <nav class="menu">
+      <a href="index.html">Главная</a>
+      <a href="#">Связь</a>
+      <a href="#">Поддержка</a>
+    </nav>
+  </div>
+</header>
+
+<main class="player-main">
+  <h1 id="anime-title" class="section-title" style="font-size: 32px; border:none;">ЗАГРУЗКА...</h1>
+
+  <div class="video-wrapper">
+    <iframe 
+      id="kinescope-player" 
+      src="" 
+      allow="autoplay; fullscreen; picture-in-picture; encrypted-media;" 
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <div class="series-nav-bar">
+    <button id="pBtn" class="nav-btn btn-gray">← <span id="pText">1 серия</span></button>
+    <button id="goToList" class="nav-btn btn-gray">список всех серий</button>
+    <button id="nBtn" class="nav-btn btn-next"><span id="nText">3 серия</span> →</button>
+  </div>
+</main>
+
+<script>
+  const playerFrame = document.getElementById('kinescope-player');
+  
+  const animeData = {
+    "oshi-no-ko": {
+      title: "Звёздное дитя 3 сезон",
+      episodes: [
+        // Здесь указываем только ID видео из ссылки Kinescope
+        { n: 1, kinescopeId: "p4hm3FUZYkUkhdQNHMHuJB" }, 
+        { n: 2, kinescopeId: "другой_id_здесь" },
+        { n: 3, kinescopeId: "еще_один_id" }
+      ]
+    },
+    "aly": {
+        title: "Аля кокетничает",
+        episodes: [
+          { n: 1, kinescopeId: "p4hm3FUZYkUkhdQNHMHuJB" }
+        ]
+    }
+  };
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id') || "oshi-no-ko";
+  const startEp = parseInt(params.get('ep')) || 0; 
+  
+  const anime = animeData[id];
+  let currentIdx = startEp;
+
+  function loadEpisode(idx) {
+    currentIdx = idx;
+    const ep = anime.episodes[idx];
+    if (!ep) return;
+
+    // Формируем ссылку для iframe
+    // Добавляем ?autoplay=1 если нужно автоматическое воспроизведение
+    playerFrame.src = `https://kinescope.io/embed/${ep.kinescopeId}?autoplay=1`;
+
+    // Обновляем кнопки
+    const pBtn = document.getElementById('pBtn');
+    const nBtn = document.getElementById('nBtn');
+
+    if (idx === 0) {
+        pBtn.classList.add('hidden');
+    } else {
+        pBtn.classList.remove('hidden');
+        document.getElementById('pText').innerText = `${anime.episodes[idx-1].n} серия`;
+    }
+
+    if (idx === anime.episodes.length - 1) {
+        nBtn.classList.add('hidden');
+    } else {
+        nBtn.classList.remove('hidden');
+        document.getElementById('nText').innerText = `${anime.episodes[idx+1].n} серия`;
+    }
+  }
+
+  if (anime) {
+    document.getElementById('anime-title').innerText = anime.title.toUpperCase();
+    loadEpisode(currentIdx);
+
+    document.getElementById('goToList').onclick = () => {
+      window.location.href = `list.html?id=${id}`;
+    };
+
+    document.getElementById('pBtn').onclick = () => loadEpisode(currentIdx - 1);
+    document.getElementById('nBtn').onclick = () => loadEpisode(currentIdx + 1);
+  }
+</script>
+</body>
+</html>
