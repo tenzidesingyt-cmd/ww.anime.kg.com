@@ -3,139 +3,201 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Список серий - KG Anime</title>
+  <title>KG Anime - Смотреть аниме онлайн</title>
   <style>
-    body {
-      margin: 0;
-      background-color: #003d3d;
-      color: white;
-      font-family: 'Segoe UI', Roboto, sans-serif;
+    :root {
+      --main-bg: #003d3d;
+      --accent-color: #a5b98f;
+      --card-bg: rgba(255, 255, 255, 0.05);
     }
 
-    .list-container {
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--main-bg);
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    header {
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-area { font-weight: bold; line-height: 1.2; }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 15px;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .hero {
       display: flex;
       flex-direction: column;
       align-items: center;
+      text-align: center;
       padding: 20px;
-      min-height: 100vh;
     }
 
-    .back-link {
-      align-self: flex-start;
-      color: #a5b98f;
-      text-decoration: none;
-      font-weight: bold;
+    .gojo-img {
+      width: 120px;
       margin-bottom: 20px;
     }
 
-    h1 {
-      font-size: 22px;
-      text-align: center;
-      margin-bottom: 30px;
-      text-transform: uppercase;
+    .hero h2 {
+      font-style: italic;
+      font-weight: 300;
+      margin-bottom: 5px;
+      font-size: 1.2rem;
     }
 
-    /* Сетка серий */
-    .episodes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 15px;
+    .hero .domain {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-top: 0;
+    }
+
+    /* Поиск */
+    .search-container {
+      width: 90%;
+      max-width: 500px;
+      margin: 20px 0;
+    }
+
+    .search-input {
       width: 100%;
-      max-width: 800px;
+      padding: 12px 20px;
+      border-radius: 25px;
+      border: none;
+      background: rgba(0,0,0,0.3);
+      color: white;
+      text-align: center;
+      font-size: 16px;
+      outline: none;
     }
 
-    .ep-card {
-      background-color: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 8px;
-      padding: 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.2s;
+    .section-title {
+      width: 100%;
+      font-size: 2.5rem;
+      font-weight: 900;
+      border-bottom: 4px solid white;
+      margin: 20px 0;
+      padding-left: 10px;
+    }
+
+    /* Сетка аниме */
+    .anime-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 15px;
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .anime-card {
       text-decoration: none;
       color: white;
+      transition: transform 0.2s;
     }
 
-    .ep-card:hover {
-      background-color: #a5b98f;
-      color: #1a1a1a;
-      transform: translateY(-3px);
+    .anime-card:hover { transform: scale(1.03); }
+
+    .poster-wrapper {
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #000;
+      position: relative;
     }
 
-    .ep-number {
-      font-size: 18px;
-      font-weight: bold;
+    .poster-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .anime-name {
+      margin-top: 8px;
+      font-size: 14px;
+      text-align: center;
       display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    .ep-label {
-      font-size: 12px;
-      opacity: 0.8;
-      margin-top: 5px;
-      display: block;
-    }
-
-    /* Мобильная адаптация */
-    @media (max-width: 480px) {
-      .episodes-grid {
-        grid-template-columns: 1fr 1fr; /* По 2 серии в ряд на мобиле */
-      }
-      h1 { font-size: 18px; }
+    @media (max-width: 600px) {
+      .section-title { font-size: 1.8rem; }
+      .anime-grid { grid-template-columns: 1fr 1fr; } /* 2 в ряд на мобиле */
     }
   </style>
 </head>
 <body>
 
-<div class="list-container">
-  <a href="index.html" class="back-link">← На главную</a>
-  
-  <h1 id="list-title">Загрузка серий...</h1>
+<header>
+  <div class="logo-area">KG<br>Anime</div>
+  <nav class="nav-links">
+    <a href="index.html">Главная</a>
+    <a href="#">Связь</a>
+    <a href="#">Поддержка</a>
+  </nav>
+</header>
 
-  <div id="episodesWrapper" class="episodes-grid">
-    </div>
+<div class="hero">
+  <img src="img/gojo.png" alt="Gojo" class="gojo-img">
+  <h2>смотрите аниме в</h2>
+  <p class="domain">anime.kg.com</p>
+
+  <div class="search-container">
+    <input type="text" id="searchInput" class="search-input" placeholder="Поиск аниме">
+  </div>
 </div>
 
+<h1 class="section-title">РЕКОМЕНДАЦИИ</h1>
+
+<div class="anime-grid" id="animeGrid">
+  </div>
+
 <script>
-  // Важно: данные должны совпадать с теми, что в player.html
-  const animeData = {
-    "oshi-no-ko": {
-      title: "Звёздное дитя",
-      episodes: [
-        { n: 1 }, { n: 2 }, { n: 3 }
-      ]
-    },
-    "aly": {
-      title: "Аля кокетничает",
-      episodes: [
-        { n: 1 }
-      ]
-    }
+  // База данных аниме (такая же как в плеере)
+  const allAnime = [
+    { id: "oshi-no-ko", name: "Звездное дитя", img: "img/oshi.jpg" },
+    { id: "aly", name: "Аля иногда кокетничает", img: "img/aly.jpg" },
+    { id: "hells-paradise", name: "Адский рай", img: "img/hell.jpg" }
+  ];
+
+  const grid = document.getElementById('animeGrid');
+  const search = document.getElementById('searchInput');
+
+  function displayAnime(list) {
+    grid.innerHTML = '';
+    list.forEach(anime => {
+      grid.innerHTML += `
+        <a href="list.html?id=${anime.id}" class="anime-card">
+          <div class="poster-wrapper">
+            <img src="${anime.img}" alt="${anime.name}">
+          </div>
+          <span class="anime-name">${anime.name}</span>
+        </a>
+      `;
+    });
+  }
+
+  // Поиск в реальном времени
+  search.oninput = () => {
+    const val = search.value.toLowerCase();
+    const filtered = allAnime.filter(a => a.name.toLowerCase().includes(val));
+    displayAnime(filtered);
   };
 
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id') || "oshi-no-ko";
-  const anime = animeData[id];
-
-  if (anime) {
-    document.getElementById('list-title').innerText = `Список серий: ${anime.title}`;
-    const wrapper = document.getElementById('episodesWrapper');
-
-    anime.episodes.forEach((ep, index) => {
-      const card = document.createElement('a');
-      card.className = 'ep-card';
-      // Ссылка ведет на плеер и передает ID аниме и индекс серии
-      card.href = `player.html?id=${id}&ep=${index}`;
-      
-      card.innerHTML = `
-        <span class="ep-number">${ep.n} серия</span>
-        <span class="ep-label">Смотреть</span>
-      `;
-      
-      wrapper.appendChild(card);
-    });
-  } else {
-    document.getElementById('list-title').innerText = "Аниме не найдено";
-  }
+  // Изначальный показ
+  displayAnime(allAnime);
 </script>
 
 </body>
