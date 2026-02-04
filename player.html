@@ -12,6 +12,7 @@
       padding: 40px 20px;
       background-color: #003d3d;
       color: white;
+      font-family: sans-serif;
     }
 
     .video-wrapper {
@@ -26,18 +27,12 @@
       margin-bottom: 20px;
     }
 
-    /* Стили для фрейма плеера */
-    #kinescope-player {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
+    video { width: 100%; height: 100%; display: block; }
 
     .series-nav-bar {
       display: flex;
       justify-content: center;
       gap: 15px;
-      margin-bottom: 30px;
       width: 100%;
     }
 
@@ -47,7 +42,6 @@
       border-radius: 4px;
       font-weight: bold;
       cursor: pointer;
-      font-size: 14px;
       color: #1a1a1a;
       transition: 0.2s;
     }
@@ -59,54 +53,41 @@
 </head>
 <body>
 
-<header class="header">
-  <div class="top-nav">
-    <span class="logo-text">KG Anime</span>
-    <nav class="menu">
-      <a href="index.html">Главная</a>
-      <a href="#">Связь</a>
-      <a href="#">Поддержка</a>
-    </nav>
-  </div>
-</header>
-
 <main class="player-main">
-  <h1 id="anime-title" class="section-title" style="font-size: 32px; border:none;">ЗАГРУЗКА...</h1>
+  <h1 id="anime-title" style="margin-bottom: 20px; border: none;">ЗАГРУЗКА...</h1>
 
   <div class="video-wrapper">
-    <iframe 
-      id="kinescope-player" 
-      src="" 
-      allow="autoplay; fullscreen; picture-in-picture; encrypted-media;" 
-      allowfullscreen>
-    </iframe>
+    <video id="vPlayer" controls preload="metadata">
+      <source id="vSource" src="" type="video/mp4">
+    </video>
   </div>
 
   <div class="series-nav-bar">
-    <button id="pBtn" class="nav-btn btn-gray">← <span id="pText">1 серия</span></button>
+    <button id="pBtn" class="nav-btn btn-gray">← <span id="pText">Назад</span></button>
     <button id="goToList" class="nav-btn btn-gray">список всех серий</button>
-    <button id="nBtn" class="nav-btn btn-next"><span id="nText">3 серия</span> →</button>
+    <button id="nBtn" class="nav-btn btn-next"><span id="nText">Вперед</span> →</button>
   </div>
 </main>
 
 <script>
-  const playerFrame = document.getElementById('kinescope-player');
-  
+  const video = document.getElementById('vPlayer');
+  const vSource = document.getElementById('vSource');
+
+  // Твоя простая структура данных
   const animeData = {
     "oshi-no-ko": {
-      title: "Звёздное дитя 3 сезон",
+      title: "Звёздное дитя",
       episodes: [
-        // Здесь указываем только ID видео из ссылки Kinescope
-        { n: 1, kinescopeId: "p4hm3FUZYkUkhdQNHMHuJB" }, 
-        { n: 2, kinescopeId: "другой_id_здесь" },
-        { n: 3, kinescopeId: "еще_один_id" }
+        { n: 1, file: "videos/oshi_1.mp4" },
+        { n: 2, file: "videos/oshi_2.mp4" },
+        { n: 3, file: "videos/oshi_3.mp4" }
       ]
     },
     "aly": {
-        title: "Аля кокетничает",
-        episodes: [
-          { n: 1, kinescopeId: "p4hm3FUZYkUkhdQNHMHuJB" }
-        ]
+      title: "Аля кокетничает",
+      episodes: [
+        { n: 1, file: "videos/aly_1.mp4" }
+      ]
     }
   };
 
@@ -118,30 +99,36 @@
   let currentIdx = startEp;
 
   function loadEpisode(idx) {
+    if (!anime || !anime.episodes[idx]) return;
+    
     currentIdx = idx;
     const ep = anime.episodes[idx];
-    if (!ep) return;
 
-    // Формируем ссылку для iframe
-    // Добавляем ?autoplay=1 если нужно автоматическое воспроизведение
-    playerFrame.src = `https://kinescope.io/embed/${ep.kinescopeId}?autoplay=1`;
+    // Загрузка видео файла
+    vSource.src = ep.file;
+    video.load();
+    
+    // Автоплей, если это не первая загрузка или есть параметр в URL
+    if(params.has('ep') || idx !== startEp) {
+      video.play().catch(e => console.log("Автоплей заблокирован браузером"));
+    }
 
-    // Обновляем кнопки
+    // Настройка кнопок навигации
     const pBtn = document.getElementById('pBtn');
     const nBtn = document.getElementById('nBtn');
 
-    if (idx === 0) {
-        pBtn.classList.add('hidden');
-    } else {
-        pBtn.classList.remove('hidden');
-        document.getElementById('pText').innerText = `${anime.episodes[idx-1].n} серия`;
+    // Кнопка назад
+    if (idx === 0) pBtn.classList.add('hidden');
+    else {
+      pBtn.classList.remove('hidden');
+      document.getElementById('pText').innerText = `${anime.episodes[idx-1].n} серия`;
     }
 
-    if (idx === anime.episodes.length - 1) {
-        nBtn.classList.add('hidden');
-    } else {
-        nBtn.classList.remove('hidden');
-        document.getElementById('nText').innerText = `${anime.episodes[idx+1].n} серия`;
+    // Кнопка вперед
+    if (idx === anime.episodes.length - 1) nBtn.classList.add('hidden');
+    else {
+      nBtn.classList.remove('hidden');
+      document.getElementById('nText').innerText = `${anime.episodes[idx+1].n} серия`;
     }
   }
 
@@ -149,10 +136,7 @@
     document.getElementById('anime-title').innerText = anime.title.toUpperCase();
     loadEpisode(currentIdx);
 
-    document.getElementById('goToList').onclick = () => {
-      window.location.href = `list.html?id=${id}`;
-    };
-
+    document.getElementById('goToList').onclick = () => window.location.href = `list.html?id=${id}`;
     document.getElementById('pBtn').onclick = () => loadEpisode(currentIdx - 1);
     document.getElementById('nBtn').onclick = () => loadEpisode(currentIdx + 1);
   }
