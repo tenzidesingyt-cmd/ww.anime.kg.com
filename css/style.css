@@ -1,0 +1,133 @@
+/* Общие стили */
+body {
+    background-color: #003d3d; /* Темно-бирюзовый фон как на скрине */
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Шапка */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px;
+}
+
+.logo-text { font-weight: bold; }
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 14px;
+}
+
+/* Центральный блок с Годжо */
+.hero {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.main-logo { width: 150px; } /* Логотип с персонажем */
+
+.hero-text {
+    font-style: italic;
+    font-size: 24px;
+    color: #cccccc;
+}
+
+.hero-text span { font-size: 32px; color: white; }
+
+/* Поиск */
+.search-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.search-input {
+    background-color: #1a1a1a;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    width: 60%;
+    color: white;
+    text-align: center;
+}
+
+/* Секция рекомендаций */
+.section-title {
+    text-align: center;
+    font-size: 48px;
+    letter-spacing: 2px;
+    border-bottom: 4px solid white;
+    padding-bottom: 10px;
+    margin: 0 0 40px 0;
+}
+
+.anime-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    position: relative;
+}
+
+.anime-card img {
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+/* Индивидуальные позиции */
+.next-btn { right: 50px; }
+.prev-btn { left: 50px; }
+
+
+/* Контейнер для карточек */
+.anime-grid {
+    display: flex;          /* Выстраиваем карточки в ряд */
+    gap: 20px;              /* Расстояние между ними */
+    padding: 20px 50px;     /* Отступы, чтобы карточки не липли к краям */
+    overflow-x: auto;       /* Включаем горизонтальную прокрутку */
+    scroll-behavior: smooth; /* Плавная прокрутка */
+    
+    /* Убираем стандартный некрасивый скроллбар */
+    scrollbar-width: none;  /* Для Firefox */
+}
+
+/* Скроллбар для Chrome/Safari (делаем его невидимым или стильным) */
+.anime-grid::-webkit-scrollbar {
+    display: none; 
+}
+
+/* Настройки самой карточки */
+.anime-card {
+    min-width: 200px;       /* Фиксированная ширина карточки */
+    flex-shrink: 0;         /* Запрещаем карточкам сжиматься */
+    text-align: center;
+}
+
+.anime-card img {
+    width: 100%;            /* Картинка на всю ширину карточки */
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s;
+}
+
+/* Эффект при наведении */
+.anime-card:hover img {
+    transform: scale(1.05);
+}
+
+.anime-card p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: white;
+    max-width: 200px;       /* Ограничиваем текст шириной карточки */
+}
+
