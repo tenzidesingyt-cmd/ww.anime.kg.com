@@ -2,70 +2,125 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Просмотр - KG Anime</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
+    /* Основной контейнер */
     .player-main {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 20px;
+      padding: 20px 10px; /* Уменьшили отступы для мобилок */
       background-color: #003d3d;
       color: white;
-      font-family: sans-serif;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
     }
 
+    #anime-title {
+      font-size: 24px; /* Чуть меньше для универсальности */
+      text-align: center;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    /* Адаптивная обертка видео */
     .video-wrapper {
       position: relative;
       width: 100%;
-      max-width: 900px;
+      max-width: 1000px; /* Макс ширина на ПК */
       aspect-ratio: 16 / 9;
-      border: 2px solid white;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 8px;
       overflow: hidden;
-      background: #000;
       margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
-    video { width: 100%; height: 100%; display: block; }
-
-    .series-nav-bar {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
+    video {
       width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Навигация (кнопки) */
+    .series-nav-bar {
+      display: grid; /* Используем сетку для выравнивания */
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+      max-width: 600px;
     }
 
     .nav-btn {
-      padding: 10px 20px;
+      padding: 12px 5px;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
       color: #1a1a1a;
-      transition: 0.2s;
+      font-size: 13px;
+      transition: transform 0.1s, background-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
+
+    .nav-btn:active { transform: scale(0.95); }
 
     .btn-gray { background-color: #e0e0e0; }
     .btn-next { background-color: #a5b98f; }
-    .hidden { visibility: hidden; }
+    .hidden { visibility: hidden; pointer-events: none; }
+
+    /* МОБИЛЬНЫЕ ПРАВИЛА (до 600px) */
+    @media (max-width: 600px) {
+      #anime-title { font-size: 18px; }
+      
+      .series-nav-bar {
+        grid-template-columns: 1fr; /* Кнопки в столбик на очень узких экранах */
+      }
+      
+      /* Если хочешь оставить их в ряд, но сделать компактнее: */
+      .series-nav-bar {
+        grid-template-columns: 1fr auto 1fr; 
+      }
+
+      .nav-btn {
+        padding: 10px 5px;
+        font-size: 11px;
+      }
+
+      #goToList {
+        font-size: 10px;
+        padding: 10px;
+      }
+    }
   </style>
 </head>
 <body>
 
 <main class="player-main">
-  <h1 id="anime-title" style="margin-bottom: 20px; border: none;">ЗАГРУЗКА...</h1>
+  <h1 id="anime-title">ЗАГРУЗКА...</h1>
 
   <div class="video-wrapper">
-    <video id="vPlayer" controls preload="metadata">
+    <video id="vPlayer" controls playsinline preload="metadata">
       <source id="vSource" src="" type="video/mp4">
     </video>
   </div>
 
   <div class="series-nav-bar">
-    <button id="pBtn" class="nav-btn btn-gray">← <span id="pText">Назад</span></button>
-    <button id="goToList" class="nav-btn btn-gray">список всех серий</button>
-    <button id="nBtn" class="nav-btn btn-next"><span id="nText">Вперед</span> →</button>
+    <button id="pBtn" class="nav-btn btn-gray">
+      ← <span id="pText">Назад</span>
+    </button>
+    
+    <button id="goToList" class="nav-btn btn-gray">СПИСОК СЕРИЙ</button>
+    
+    <button id="nBtn" class="nav-btn btn-next">
+      <span id="nText">Вперед</span> →
+    </button>
   </div>
 </main>
 
@@ -73,7 +128,6 @@
   const video = document.getElementById('vPlayer');
   const vSource = document.getElementById('vSource');
 
-  // Твоя простая структура данных
   const animeData = {
     "oshi-no-ko": {
       title: "Звёздное дитя",
@@ -104,36 +158,32 @@
     currentIdx = idx;
     const ep = anime.episodes[idx];
 
-    // Загрузка видео файла
     vSource.src = ep.file;
     video.load();
     
-    // Автоплей, если это не первая загрузка или есть параметр в URL
+    // Пытаемся запустить только если это осознанный клик
     if(params.has('ep') || idx !== startEp) {
-      video.play().catch(e => console.log("Автоплей заблокирован браузером"));
+      video.play().catch(() => console.log("Браузер ждет клика"));
     }
 
-    // Настройка кнопок навигации
     const pBtn = document.getElementById('pBtn');
     const nBtn = document.getElementById('nBtn');
 
-    // Кнопка назад
     if (idx === 0) pBtn.classList.add('hidden');
     else {
       pBtn.classList.remove('hidden');
-      document.getElementById('pText').innerText = `${anime.episodes[idx-1].n} серия`;
+      document.getElementById('pText').innerText = `${anime.episodes[idx-1].n} сер.`;
     }
 
-    // Кнопка вперед
     if (idx === anime.episodes.length - 1) nBtn.classList.add('hidden');
     else {
       nBtn.classList.remove('hidden');
-      document.getElementById('nText').innerText = `${anime.episodes[idx+1].n} серия`;
+      document.getElementById('nText').innerText = `${anime.episodes[idx+1].n} сер.`;
     }
   }
 
   if (anime) {
-    document.getElementById('anime-title').innerText = anime.title.toUpperCase();
+    document.getElementById('anime-title').innerText = anime.title;
     loadEpisode(currentIdx);
 
     document.getElementById('goToList').onclick = () => window.location.href = `list.html?id=${id}`;
