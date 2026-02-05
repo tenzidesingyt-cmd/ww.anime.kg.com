@@ -1,20 +1,25 @@
-/* Общие стили */
+/* 1. ОБЩИЕ СТИЛИ (ДЛЯ ВСЕХ УСТРОЙСТВ)*/
 body {
-    background-color: #003d3d; /* Темно-бирюзовый фон как на скрине */
+    background-color: #003d3d;
     color: white;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    overflow-x: hidden; /* Чтобы сайт не дергался влево-вправо */
 }
 
-/* Шапка */
+/* --- Шапка --- */
 .top-nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 20px 50px;
 }
 
-.logo-text { font-weight: bold; }
+.logo-text { 
+    font-weight: bold; 
+    font-size: 22px;
+}
 
 .menu a {
     color: white;
@@ -23,23 +28,30 @@ body {
     font-size: 14px;
 }
 
-/* Центральный блок с Годжо */
+/* --- Центральный блок --- */
 .hero {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
-.main-logo { width: 150px; } /* Логотип с персонажем */
+.main-logo { 
+    width: 150px; 
+}
 
 .hero-text {
     font-style: italic;
     font-size: 24px;
     color: #cccccc;
+    line-height: 1.4;
 }
 
-.hero-text span { font-size: 32px; color: white; }
+.hero-text span { 
+    font-size: 32px; 
+    color: white; 
+    font-weight: bold; 
+}
 
-/* Поиск */
+/* --- Поиск --- */
 .search-container {
     text-align: center;
     margin: 30px 0;
@@ -48,86 +60,128 @@ body {
 .search-input {
     background-color: #1a1a1a;
     border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
+    border-radius: 25px;
+    padding: 12px 20px;
     width: 60%;
     color: white;
     text-align: center;
+    outline: none;
 }
 
-/* Секция рекомендаций */
+/* --- Секция рекомендаций --- */
 .section-title {
     text-align: center;
     font-size: 48px;
     letter-spacing: 2px;
     border-bottom: 4px solid white;
     padding-bottom: 10px;
-    margin: 0 0 40px 0;
+    margin: 40px auto;
+    width: fit-content;
 }
 
 .anime-grid {
     display: flex;
-    justify-content: center;
     gap: 20px;
-    padding: 20px;
-    position: relative;
+    padding: 20px 50px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    /* Скрываем скроллбар */
+    scrollbar-width: none; /* Firefox */
 }
 
-.anime-card img {
-    width: 200px;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 5px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-}
-
-/* Индивидуальные позиции */
-.next-btn { right: 50px; }
-.prev-btn { left: 50px; }
-
-
-/* Контейнер для карточек */
-.anime-grid {
-    display: flex;          /* Выстраиваем карточки в ряд */
-    gap: 20px;              /* Расстояние между ними */
-    padding: 20px 50px;     /* Отступы, чтобы карточки не липли к краям */
-    overflow-x: auto;       /* Включаем горизонтальную прокрутку */
-    scroll-behavior: smooth; /* Плавная прокрутка */
-    
-    /* Убираем стандартный некрасивый скроллбар */
-    scrollbar-width: none;  /* Для Firefox */
-}
-
-/* Скроллбар для Chrome/Safari (делаем его невидимым или стильным) */
 .anime-grid::-webkit-scrollbar {
-    display: none; 
+    display: none; /* Chrome, Safari */
 }
 
-/* Настройки самой карточки */
 .anime-card {
-    min-width: 200px;       /* Фиксированная ширина карточки */
-    flex-shrink: 0;         /* Запрещаем карточкам сжиматься */
+    min-width: 200px;
+    flex-shrink: 0;
     text-align: center;
 }
 
+.anime-card a { 
+    text-decoration: none; 
+    color: inherit; 
+}
+
 .anime-card img {
-    width: 100%;            /* Картинка на всю ширину карточки */
+    width: 100%;
     height: 300px;
     object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
     transition: transform 0.3s;
 }
 
-/* Эффект при наведении */
-.anime-card:hover img {
-    transform: scale(1.05);
+.anime-card:hover img { 
+    transform: scale(1.05); 
 }
 
 .anime-card p {
-    margin-top: 10px;
+    margin-top: 12px;
     font-size: 14px;
-    color: white;
-    max-width: 200px;       /* Ограничиваем текст шириной карточки */
+    max-width: 200px;
 }
 
+/* ==========================================
+   2. АДАПТАЦИЯ (ДЛЯ МОБИЛЬНЫХ ТЕЛЕФОНОВ)
+   ========================================== */
+@media screen and (max-width: 768px) {
+    
+    /* Сужаем отступы в шапке */
+    .top-nav {
+        flex-direction: column;
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .menu {
+        display: flex;
+        gap: 15px;
+    }
+
+    .menu a {
+        margin: 0;
+        font-size: 13px;
+    }
+
+    /* Уменьшаем текст Hero */
+    .hero-text { font-size: 18px; }
+    .hero-text span { font-size: 24px; }
+
+    /* Поиск на весь экран */
+    .search-input { 
+        width: 85%; 
+        font-size: 16px; /* Важно: предотвращает авто-зум на iPhone */
+    }
+
+    /* Заголовок секции */
+    .section-title {
+        font-size: 70px;
+        margin: 20px auto;
+        border-bottom-width: 2px;
+    }
+
+    /* Настройка карточек (как вы просили — компактно) */
+    .anime-grid {
+        padding: 10px 20px;
+        gap: 40px;
+        scroll-snap-type: x mandatory; /* Эффект прилипания */
+    }
+
+    .anime-card {
+        min-width: 200px; /* Фиксированная ширина на мобильном */
+        max-width: 100000px;
+        scroll-snap-align: start;
+    }
+
+    .anime-card img {
+        height: 700px; /* Высота под меньшую ширину */
+        border-radius: 20px;
+    }
+
+    .anime-card p {
+        font-size: 50px;
+        max-width: 100%;
+    }
+}

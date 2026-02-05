@@ -87,8 +87,8 @@
 <body>
 
 <div class="list-container">
-  <a href="index.html" class="back-link">← На главную</a>
-  
+  <a type="back" class="back-link" onclick="history.back();" >← Назат</a>
+
   <h1 id="list-title">Загрузка серий...</h1>
 
   <div id="episodesWrapper" class="episodes-grid">
@@ -99,9 +99,10 @@
   // Важно: данные должны совпадать с теми, что в player.html
   const animeData = {
     "oshi-no-ko": {
-      title: "Звёздное дитя",
+      title: " Звёздное дитя",
       episodes: [
-        { n: 1 }, { n: 2 }, { n: 3 }
+        { n: 1 }, { n: 2 }, { n: 3 }, { n: 4 }, { n: 5 }, { n: 6 },
+        { n: 7 }, { n: 8 }, { n: 9 }, { n: 10 }, { n: 11 }, { n: 12 }
       ]
     },
     "aly": {
