@@ -4,7 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KG Anime</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet"  href="css/style.css">
+  <style>
+    /* Небольшое дополнение, чтобы при поиске сетка не ломалась */
+    .anime-card[style*="display: none"] {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
 
@@ -24,7 +30,7 @@
   </div>
 
   <div class="search-container">
-    <input type="text" placeholder="Поиск аниме" class="search-input">
+    <input type="text" id="animeSearch" placeholder="Поиск аниме" class="search-input">
   </div>
 </header>
 
@@ -32,31 +38,60 @@
   <section class="recommendations">
     <h2 class="section-title">РЕКОМЕНДАЦИИ</h2>
     
-    <div class="anime-grid">
-      <div class="anime-card">
+    <div class="anime-grid" id="animeGrid">
+      <div class="anime-card" data-title="Звёздное дитя oshi no ko звёздное дитя">
         <a href="list.html?id=oshi-no-ko">
           <img src="images/oshi-no-ko.jpg" alt="Oshi no Ko">
           <p>Звёздное дитя 3 сезон</p>
         </a>
       </div>
 
-      <div class="anime-card">
+      <div class="anime-card" data-title="Адский рай hell's paradise адский рай">
         <a href="list.html?id=hells-paradise">
           <img src="images/hells-paradise.jpg" alt="Hell's Paradise">
           <p>Адский рай</p>
         </a>
       </div>
 
-   
-      <div class="anime-card">
+      <div class="anime-card" data-title="Магическая битва jujutsu kaisen магическая битва">
         <a href="list.html?id=jujutsu">
           <img src="images/jujutsu.jpg" alt="Jujutsu Kaisen">
           <p>Магическая битва 3</p>
         </a>
       </div>
+
+      <div class="anime-card" data-title="Аля иногда кокетничает со мной по-русски aly">
+        <a href="list.html?id=aly">
+          <img src="images/aly.jpg" alt="Aly">
+          <p>Аля кокетничает</p>
+        </a>
+      </div>
+
     </div>
   </section>
 </main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('animeSearch');
+    const cards = document.querySelectorAll('.anime-card');
+
+    searchInput.addEventListener('input', function() {
+      const query = this.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        // Ищем совпадение в атрибуте data-title
+        const title = card.getAttribute('data-title').toLowerCase();
+        
+        if (title.includes(query)) {
+          card.style.display = ""; // Показываем (использует стандартный flex/block)
+        } else {
+          card.style.display = "none"; // Прячем
+        }
+      });
+    });
+  });
+</script>
 
 </body>
 </html>
