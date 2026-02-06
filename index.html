@@ -2,13 +2,19 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
   <title>KG Anime</title>
   <link rel="stylesheet"  href="css/style.css">
   <style>
     /* Небольшое дополнение, чтобы при поиске сетка не ломалась */
     .anime-card[style*="display: none"] {
       display: none !important;
+    }
+
+    /* Дополнительно: убираем синее выделение при тапе на карточки (полезно для мобилок) */
+    a, .anime-card {
+      -webkit-tap-highlight-color: transparent;
     }
   </style>
 </head>
@@ -53,43 +59,54 @@
         </a>
       </div>
 
-      <div class="anime-card" data-title="Магическая битва jujutsu kaisen магическая битва">
+      <div class="anime-card" data-title="Магическая битва 3">
         <a href="list.html?id=jujutsu">
-          <img src="images/jujutsu.jpg" alt="Jujutsu Kaisen">
+          <img src="images/jujutsu.jpg" alt="Магическая битва 3">
           <p>Магическая битва 3</p>
         </a>
       </div>
 
-      <div class="anime-card" data-title="Аля иногда кокетничает со мной по-русски aly">
+      <div class="anime-card" data-title="Аля иногда кокетничает со мной по-русски">
         <a href="list.html?id=aly">
           <img src="images/aly.jpg" alt="Aly">
           <p>Аля кокетничает</p>
         </a>
       </div>
-
+      <div class="anime-card" data-title="One Piece ван пис ванпис ван пис">
+        <a href="list.html?id=One Piece">
+          <img src="images/one-piece.jpg" alt="Ван Пис">
+          <p>Ван Пис</p>
+        </a>
+      </div>
     </div>
   </section>
 </main>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // 1. Скрипт поиска (твой оригинал)
     const searchInput = document.getElementById('animeSearch');
     const cards = document.querySelectorAll('.anime-card');
 
     searchInput.addEventListener('input', function() {
       const query = this.value.toLowerCase().trim();
-
       cards.forEach(card => {
-        // Ищем совпадение в атрибуте data-title
         const title = card.getAttribute('data-title').toLowerCase();
-        
-        if (title.includes(query)) {
-          card.style.display = ""; // Показываем (использует стандартный flex/block)
-        } else {
-          card.style.display = "none"; // Прячем
-        }
+        card.style.display = title.includes(query) ? "" : "none";
       });
     });
+
+    // 2. ДОБАВЛЕНО: Принудительная блокировка зума (для Android и iOS)
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 1) e.preventDefault();
+    }, { passive: false });
+
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) e.preventDefault();
+      lastTouchEnd = now;
+    }, false);
   });
 </script>
 

@@ -140,26 +140,32 @@
 </main>
 
 <script>
-  // Те же данные и логика, что и ранее
-  const animeData = {
-    "oshi-no-ko": {
-      title: "Звёздное дитя 3 сезон",
-      episodes: [
-        { n: 1, file: "videos/oshi_1.mp4" },
-        { n: 2, file: "videos/oshi_2.mp4" },
-        { n: 3, file: "videos/oshi_3.mp4" },
-        { n: 4, file: "videos/oshi_4.mp4" },
-        { n: 5, file: "videos/oshi_5.mp4" },
-        { n: 6, file: "videos/oshi_6.mp4" }
-      ]
-    },
-    "aly": {
-      title: "Аля кокетничает",
-      episodes: [
-        { n: 1, file: "videos/aly_1.mp4" }
-      ]
-    }
-  };
+// Те же данные и логика, что и ранее
+const animeData = {
+  "oshi-no-ko": {
+    title: "Звёздное дитя 3 сезон",
+    episodes: [
+      { n: 1, file: "videos/oshi_1.mp4" },
+      { n: 2, file: "videos/oshi_2.mp4" },
+      { n: 3, file: "videos/oshi_3.mp4" },
+      { n: 4, file: "videos/oshi_4.mp4" },
+      { n: 5, file: "videos/oshi_5.mp4" },
+      { n: 6, file: "videos/oshi_6.mp4" }
+    ]
+  },
+  "aly": {
+    title: "Аля кокетничает",
+    episodes: [
+      { n: 1, file: "videos/aly_1.mp4" }
+    ]
+  },
+  "One Piece": {
+    title: "Ван Пис",
+    episodes: [
+      { n: 1, file: "videos/onepiece_1.mp4" }
+    ]
+  }
+};
 
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id') || "oshi-no-ko";
